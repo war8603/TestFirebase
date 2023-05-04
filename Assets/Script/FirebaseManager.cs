@@ -4,6 +4,7 @@ using UnityEngine;
 
 using Firebase.Messaging;
 using Firebase.Crashlytics;
+using Firebase.Analytics;
 using Firebase;
 
 public class FirebaseManager : MonoBehaviour
@@ -51,5 +52,13 @@ public class FirebaseManager : MonoBehaviour
     public void TestCrash()
     {
         throw new System.Exception("(ignore) this is a test crash");
+    }
+
+    public void SendLogEvent(string eventName)
+    {
+        if (app != null)
+            FirebaseAnalytics.LogEvent(eventName);
+        else
+            Debug.Log(string.Format("[Failed] Not Initialized Firebase"));
     }
 }
