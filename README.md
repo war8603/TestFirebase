@@ -7,4 +7,4 @@ Test Firebase
 
 
 - https://firebase.google.com/docs/cloud-messaging/unity/client?hl=ko#analytics-enabled
-  - Firebase Analytics 설치 필요. (확인결과 필수로 필요하지 않는것으로 결론지음)
+  - Firebase Analytics 설치 필요. (재확인 결과 필수로 필요하지 않음)
