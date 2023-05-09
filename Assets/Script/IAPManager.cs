@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Purchasing;
 using UnityEngine.Purchasing.Extension;
 
-public class IAPManager : MonoBehaviour, IDetailedStoreListener
+public class IAPManager : IDetailedStoreListener
 {
     private IAPManager _instance;
     public IAPManager Instance
@@ -44,9 +44,10 @@ public class IAPManager : MonoBehaviour, IDetailedStoreListener
         ConfigurationBuilder builder = ConfigurationBuilder.Instance(module);
         for (int i = 0; i < productIds.Length; i++)
         {
-            builder.AddProduct(productIds[i], ProductType.Consumable);
+            builder.AddProduct(productIds[i], ProductType.NonConsumable);
         }
         UnityPurchasing.Initialize(this, builder);
+        Debug.Log("[IAP] Start Successs");
     }
 
     public void OnInitialized(IStoreController controller, IExtensionProvider extensions)
@@ -127,23 +128,25 @@ public class IAPManager : MonoBehaviour, IDetailedStoreListener
 
     public void OnInitializeFailed(InitializationFailureReason error)
     {
-        throw new System.NotImplementedException();
+        Debug.Log($"[IAP][Failed] Initialized error = {error.ToString()}");
+        OnFailedInitializ?.Invoke();
     }
-
-    public void OnInitializeFailed(InitializationFailureReason error, string message)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    
 
     public void OnPurchaseFailed(UnityEngine.Purchasing.Product product, PurchaseFailureDescription failureDescription)
     {
-        throw new NotImplementedException();
+        Debug.Log($"[IAP][Failed] product = {product.definition.id}, message ={failureDescription.message}");
+        OnFailedInitializ?.Invoke();
     }
 
     public void OnPurchaseFailed(UnityEngine.Purchasing.Product product, PurchaseFailureReason failureReason)
     {
-        throw new NotImplementedException();
+        Debug.Log($"[IAP][Failed] product = {product.definition.id}, message ={failureReason.ToString()}");
+        OnFailedInitializ?.Invoke();
+    }
+
+    public void OnInitializeFailed(InitializationFailureReason error, string message)
+    {
+        Debug.Log($"[IAP][Failed] Initialized error = {error.ToString()} // message = {message}");
+        OnFailedInitializ?.Invoke();
     }
 }
